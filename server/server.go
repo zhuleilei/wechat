@@ -9,9 +9,13 @@ import (
 	"runtime/debug"
 	"strconv"
 
-	"github.com/silenceper/wechat/context"
-	"github.com/silenceper/wechat/message"
-	"github.com/silenceper/wechat/util"
+	"github.com/zhuleilei/wechat/context"
+	"github.com/zhuleilei/wechat/message"
+	"github.com/zhuleilei/wechat/util"
+)
+
+const (
+	CustomMsgUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s"
 )
 
 //Server struct
@@ -235,8 +239,11 @@ func (srv *Server) Send() (err error) {
 			Nonce:        srv.nonce,
 		}
 	}
-	if replyMsg != nil {
-		srv.XML(replyMsg)
-	}
+	// if replyMsg != nil {
+	// 	srv.XML(replyMsg)
+	// }
+	srv.Writer.Write([]byte{})
+	asscessToken, _ := srv.GetAccessToken()
+	util.PostXML(fmt.Sprintf(CustomMsgUrl, asscessToken), replyMsg)
 	return
 }

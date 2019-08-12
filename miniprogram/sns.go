@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/silenceper/wechat/util"
+	"github.com/zhuleilei/wechat/util"
 )
 
 const (
