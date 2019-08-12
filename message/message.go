@@ -3,17 +3,17 @@ package message
 import "encoding/xml"
 
 // MsgType 基本消息类型
-type MsgType string
+type MsgType CDATA
 
 // EventType 事件类型
-type EventType string
+type EventType CDATA
 
 // InfoType 第三方平台授权事件类型
-type InfoType string
+type InfoType CDATA
 
 const (
 	//MsgTypeText 表示文本消息
-	MsgTypeText MsgType = "text"
+	MsgTypeText CDATA = "text"
 	//MsgTypeImage 表示图片消息
 	MsgTypeImage = "image"
 	//MsgTypeVoice 表示语音消息
@@ -75,6 +75,12 @@ const (
 	// InfoTypeUpdateAuthorized 更新授权
 	InfoTypeUpdateAuthorized = "updateauthorized"
 )
+type CDATA string
+func (c CDATA) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(struct {
+		string `xml:",cdata"`
+	}{string(c)}, start)
+}
 
 //MixMessage 存放所有微信发送过来的消息和事件
 type MixMessage struct {
@@ -134,7 +140,6 @@ type MixMessage struct {
 	AuthorizationCodeExpiredTime int64    `xml:"AuthorizationCodeExpiredTime"`
 	PreAuthCode                  string   `xml:"PreAuthCode"`
 }
-
 //EventPic 发图事件推送
 type EventPic struct {
 	PicMd5Sum string `xml:"PicMd5Sum"`
@@ -158,20 +163,20 @@ type ResponseEncryptedXMLMsg struct {
 
 // CommonToken 消息中通用的结构
 type CommonToken struct {
-	XMLName      xml.Name `xml:"xml"`
-	ToUserName   string   `xml:"ToUserName"`
-	FromUserName string   `xml:"FromUserName"`
-	CreateTime   int64    `xml:"CreateTime"`
-	MsgType      MsgType  `xml:"MsgType"`
+	XMLName      xml.Name `xml:"xml" json:"-"`
+	ToUserName   CDATA   `xml:"ToUserName" json:"touser"`
+	FromUserName CDATA   `xml:"FromUserName" json:"-"`
+	CreateTime   int64    `xml:"CreateTime" json:"createtime"`
+	MsgType      CDATA  `xml:"MsgType" json:"msgtype"`
 }
 
 //SetToUserName set ToUserName
-func (msg *CommonToken) SetToUserName(toUserName string) {
+func (msg *CommonToken) SetToUserName(toUserName CDATA) {
 	msg.ToUserName = toUserName
 }
 
 //SetFromUserName set FromUserName
-func (msg *CommonToken) SetFromUserName(fromUserName string) {
+func (msg *CommonToken) SetFromUserName(fromUserName CDATA) {
 	msg.FromUserName = fromUserName
 }
 
@@ -181,6 +186,6 @@ func (msg *CommonToken) SetCreateTime(createTime int64) {
 }
 
 //SetMsgType set MsgType
-func (msg *CommonToken) SetMsgType(msgType MsgType) {
+func (msg *CommonToken) SetMsgType(msgType CDATA) {
 	msg.MsgType = msgType
 }

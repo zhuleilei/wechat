@@ -5,8 +5,8 @@ type Voice struct {
 	CommonToken
 
 	Voice struct {
-		MediaID string `xml:"MediaId"`
-	} `xml:"Voice"`
+		MediaID string `xml:"MediaId" json:"media_id"`
+	} `xml:"Voice" json:"voice"`
 }
 
 //NewVoice 回复语音消息

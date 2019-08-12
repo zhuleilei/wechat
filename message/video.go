@@ -5,10 +5,10 @@ type Video struct {
 	CommonToken
 
 	Video struct {
-		MediaID     string `xml:"MediaId"`
-		Title       string `xml:"Title,omitempty"`
-		Description string `xml:"Description,omitempty"`
-	} `xml:"Video"`
+		MediaID     string `xml:"MediaId" json:"media_id"`
+		Title       string `xml:"Title,omitempty" json:"title,omitempty"`
+		Description string `xml:"Description,omitempty" json:"description,omitempty"`
+	} `xml:"Video" json:"video"`
 }
 
 //NewVideo 回复图片消息

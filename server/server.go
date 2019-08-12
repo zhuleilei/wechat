@@ -239,11 +239,18 @@ func (srv *Server) Send() (err error) {
 			Nonce:        srv.nonce,
 		}
 	}
-	// if replyMsg != nil {
-	// 	srv.XML(replyMsg)
-	// }
-	srv.Writer.Write([]byte{})
-	asscessToken, _ := srv.GetAccessToken()
-	util.PostXML(fmt.Sprintf(CustomMsgUrl, asscessToken), replyMsg)
+	//if replyMsg != nil {
+	//	srv.XML(replyMsg)
+	//}
+	_, _ = srv.Writer.Write([]byte{})
+	accessToken, er1 := srv.GetAccessToken()
+	if er1 != nil {
+		fmt.Println(er1.Error())
+		return
+	}
+	_,er := util.PostJSON(fmt.Sprintf(CustomMsgUrl, accessToken), replyMsg)
+	if er != nil {
+		return er
+	}
 	return
 }

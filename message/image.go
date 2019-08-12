@@ -5,8 +5,8 @@ type Image struct {
 	CommonToken
 
 	Image struct {
-		MediaID string `xml:"MediaId"`
-	} `xml:"Image"`
+		MediaID string `xml:"MediaId" json:"media_id"`
+	} `xml:"Image" json:"image"`
 }
 
 //NewImage 回复图片消息
